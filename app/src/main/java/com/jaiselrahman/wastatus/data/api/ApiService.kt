@@ -67,11 +67,11 @@ object ApiService {
                 Video(
                     it.id,
                     it.snippet.title,
-                    "https://youtube.com/watch?v={$it.id}",
+                    "https://youtube.com/watch?v=${it.id}",
                     it.snippet.thumbnails.default.url,
                     it.snippet.publishedAt.value,
-                    it.statistics.viewCount.toInt(),
-                    it.statistics.likeCount.toInt()
+                    it.statistics.viewCount.toLong(),
+                    it.statistics.likeCount.toLong()
                 )
             )
         }

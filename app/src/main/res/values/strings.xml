@@ -12,4 +12,8 @@
     <string name="loading_done">Loading done</string>
     <string name="refresh_done">Refresh done</string>
     <string name="refreshing">Refreshing…</string>
+    <string name="viewInYoutube">View in YouTube</string>
+    <string name="setWhatsappStatus">Set as Whatsapp status</string>
+    <string name="shareVideo">Share video</string>
+    <string name="error_failed_to_play">Failed to play video</string>
 </resources>
