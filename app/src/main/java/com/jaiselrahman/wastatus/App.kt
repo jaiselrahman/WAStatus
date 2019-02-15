@@ -3,6 +3,8 @@ package com.jaiselrahman.wastatus
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
+import android.content.SharedPreferences
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
@@ -21,6 +23,7 @@ class App : Application() {
     private lateinit var appDir: File
     private lateinit var apiKey: String
     private lateinit var playlistId: String
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate() {
         super.onCreate()
@@ -28,6 +31,8 @@ class App : Application() {
 
         apiKey = getString(R.string.api_key)
         playlistId = getString(R.string.playlist_id)
+
+        sharedPreferences = getSharedPreferences(App.APP_NAME, Context.MODE_PRIVATE)
 
         Picasso.setSingletonInstance(
             Picasso.Builder(this)
@@ -69,6 +74,9 @@ class App : Application() {
         private const val APP_NAME = "WAStatus"
         private const val AUTHORITY = "com.jaiselrahman.wastatus.fileprovider"
 
+        private const val SHOWN_FOR_VIDEOS = "SHOWN_FOR_VIDEOS"
+        private const val SHOWN_FOR_DOWNLOADS = "SHOWN_FOR_DOWNLOADS"
+
         internal const val DOWNLOAD_NOTIFY_ID = 100
         internal const val TAG = APP_NAME
         internal const val DOWNLOAD_NOTIFY_CHANNEL = "DOWNLOAD_NOTIFY_CHANNEL"
@@ -76,6 +84,26 @@ class App : Application() {
         internal const val VIDEO_PATH = "VIDEO_PATH"
         internal const val ORIG_VIDEOS = "ORIG_VIDEOS"
         internal const val VIDEO_URL = "VIDEO_URL"
+
+        var isShownTapTargetForVideos: Boolean
+            set(value) {
+                app.sharedPreferences.edit()
+                    .putBoolean(SHOWN_FOR_VIDEOS, value)
+                    .apply()
+            }
+            get() {
+                return app.sharedPreferences.getBoolean(SHOWN_FOR_VIDEOS, false)
+            }
+
+        var isShownTapTargetForDownloads: Boolean
+            set(value) {
+                app.sharedPreferences.edit()
+                    .putBoolean(SHOWN_FOR_DOWNLOADS, value)
+                    .apply()
+            }
+            get() {
+                return app.sharedPreferences.getBoolean(SHOWN_FOR_DOWNLOADS, false)
+            }
 
         fun getApiKey() = app.apiKey
 

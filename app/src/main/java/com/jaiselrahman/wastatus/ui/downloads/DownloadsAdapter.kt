@@ -13,7 +13,7 @@ class DownloadsAdapter(
     private val showSplitAction: Boolean,
     private val onFileClickListener: OnFileClickListener
 ) : RecyclerView.Adapter<DownloadsAdapter.ViewHolder>() {
-    private var files: Array<File>? = null
+    private var files: List<File>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -29,7 +29,7 @@ class DownloadsAdapter(
 
     override fun getItemCount() = files?.size ?: 0
 
-    fun setFiles(files: Array<File>) {
+    fun setFiles(files: List<File>) {
         this.files = files
         notifyDataSetChanged()
     }

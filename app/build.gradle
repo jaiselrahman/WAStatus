@@ -59,6 +59,8 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.1.0-alpha03'
     implementation 'android.arch.paging:runtime:1.0.1'
 
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
+
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:9.0.1'
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:1.8.0'
 

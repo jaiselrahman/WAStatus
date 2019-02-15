@@ -1,6 +1,5 @@
 package com.jaiselrahman.wastatus.util
 
-
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -9,7 +8,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.math.RoundingMode
 import java.text.DecimalFormat
-
 
 object Utils {
     fun getConvertedFile(folder: String, fileName: String): File {

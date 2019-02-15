@@ -1,14 +1,18 @@
 package com.jaiselrahman.wastatus.ui
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.jaiselrahman.wastatus.App
 import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.ui.downloads.DownloadsFragment
+import com.jaiselrahman.wastatus.ui.videos.VideosFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(android.R.id.content, downloadsFragment)
                 .commit()
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
         } else {
             setContentView(R.layout.activity_main)
             viewPager.adapter = MainViewPager(supportFragmentManager)
@@ -33,7 +38,21 @@ class MainActivity : AppCompatActivity() {
             bottomNavigation.enableAnimation(false)
         }
 
+        if (savedInstanceState == null) {
+            requestPermission()
+        }
+
         registerReceiver(splitResultReceiver, IntentFilter(App.ACTION_VIEW_RESULT))
+    }
+
+    private fun requestPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            requestPermissions(
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                VideosFragment.REQUEST_PERMISSION
+            )
+        }
     }
 
     override fun onDestroy() {

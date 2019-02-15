@@ -1,10 +1,8 @@
 package com.jaiselrahman.wastatus.ui.videos
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,11 +11,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetView
 import com.jaiselrahman.wastatus.App
 import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.data.api.Status
@@ -26,6 +28,7 @@ import com.jaiselrahman.wastatus.ui.YouTubePlayerActivity
 import com.jaiselrahman.wastatus.util.NetworkUtil
 import com.jcodecraeer.xrecyclerview.LoadingMoreFooter
 import com.jcodecraeer.xrecyclerview.XRecyclerView
+import kotlinx.android.synthetic.main.video_list_item.view.*
 import kotlinx.android.synthetic.main.video_lists.view.*
 
 class VideosFragment : Fragment() {
@@ -110,9 +113,6 @@ class VideosFragment : Fragment() {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(video.url)))
 
                 ViewType.DOWNLOAD -> {
-                    if (savedInstanceState == null) {
-                        requestPermission()
-                    }
                     val intent = Intent(context, VideoDownloaderService::class.java)
                         .putExtra(App.VIDEO_URL, video.url)
                     ContextCompat.startForegroundService(context!!, intent)
@@ -122,14 +122,22 @@ class VideosFragment : Fragment() {
         return view
     }
 
-    private fun requestPermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
-        if (activity?.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            requestPermissions(
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                REQUEST_PERMISSION
-            )
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        if (view != null && isVisibleToUser) {
+            showTapTargets()
         }
+    }
+
+    private fun showTapTargets() {
+        if (videoList.size <= 0 || App.isShownTapTargetForVideos) return
+        TapTargetView.showFor(
+            activity, TapTarget.forView(
+                videoList[0].rootView.download,
+                getString(R.string.download),
+                getString(R.string.download_desc)
+            )
+        )
+        App.isShownTapTargetForVideos = true
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
