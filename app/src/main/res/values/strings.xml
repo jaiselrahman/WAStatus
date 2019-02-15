@@ -14,6 +14,22 @@
     <string name="refreshing">Refreshing…</string>
     <string name="viewInYoutube">View in YouTube</string>
     <string name="setWhatsappStatus">Set as Whatsapp status</string>
-    <string name="shareVideo">Share video</string>
     <string name="error_failed_to_play">Failed to play video</string>
+    <string name="view_video">View video</string>
+    <string name="split_video">Split video</string>
+    <string name="splitting">Splitting…</string>
+    <string name="view">View</string>
+    <string name="splitting_done">Splitting Done</string>
+    <string name="downloading">Downloading…</string>
+    <string name="cancel">Cancel</string>
+    <string name="split">Split</string>
+    <string name="downloading_failed">Downloading failed</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="error_whatsapp_not_found">Whatsapp not found</string>
+    <string name="download_notifications">Download Notifications</string>
+    <string name="share_video">Share video</string>
+    <string name="request_permission">Please grant required permission</string>
+    <string name="downloads">Downloads</string>
+    <string name="split_failed">Split failed</string>
+    <string name="videos">Videos</string>
 </resources>

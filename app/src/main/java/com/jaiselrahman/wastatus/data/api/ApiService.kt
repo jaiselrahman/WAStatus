@@ -8,8 +8,8 @@ import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.model.Video
 
 object ApiService {
-    private const val API_KEY = "AIzaSyDvmyKkvBFwP2Xk71Ld0ROKpKwwxxT_zAc"
-    private const val PLAYLIST_ID = "UUa4XGpXAxowdmgja95Ch9lQ"
+    private val API_KEY = App.getApiKey()
+    private val PLAYLIST_ID = App.getPlaylistId()
     private var youTubeService: YouTube? = null
     private var lastPosition = -1
     private val pageTokens = HashMap<Int, String?>()

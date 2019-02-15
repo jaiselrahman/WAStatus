@@ -1,4 +1,4 @@
-package com.jaiselrahman.wastatus.ui
+package com.jaiselrahman.wastatus.ui.videos
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations

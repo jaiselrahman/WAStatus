@@ -1,4 +1,4 @@
-package com.jaiselrahman.wastatus.ui
+package com.jaiselrahman.wastatus.ui.videos
 
 import android.view.LayoutInflater
 import android.view.View
@@ -68,8 +68,8 @@ class VideoListAdapter : PagedListAdapter<Video, VideoListAdapter.ViewHolder>(DI
                 onVideoClickListener?.invoke(video, ViewType.YOUTUBE)
             }
 
-            v.whatsapp.setOnClickListener {
-                onVideoClickListener?.invoke(video, ViewType.WHATSAPP)
+            v.download.setOnClickListener {
+                onVideoClickListener?.invoke(video, ViewType.DOWNLOAD)
             }
         }
 
@@ -114,6 +114,6 @@ class VideoListAdapter : PagedListAdapter<Video, VideoListAdapter.ViewHolder>(DI
 internal typealias OnVideoClickListener = (Video, ViewType) -> Unit
 
 enum class ViewType {
-    THUMBNAIL, SHARE, YOUTUBE, WHATSAPP
+    THUMBNAIL, SHARE, YOUTUBE, DOWNLOAD
 }
 

@@ -4,6 +4,19 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+    signingConfigs {
+        config {
+            Properties properties = new Properties()
+            File propertiesFile = project.rootProject.file('app/gradle.properties')
+            if (propertiesFile.exists()) {
+                properties.load(propertiesFile.newDataInputStream())
+                storeFile file(properties.getProperty('KEYSTORE_FILE'))
+                keyAlias properties.getProperty('KEY_ALIAS')
+                storePassword properties.getProperty('KEYSTORE_PASSWORD')
+                keyPassword properties.getProperty('KEY_PASSWORD')
+            }
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.jaiselrahman.wastatus"
@@ -14,6 +27,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -29,7 +43,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
     implementation 'androidx.core:core-ktx:1.1.0-alpha03'
@@ -37,18 +51,20 @@ dependencies {
     implementation 'androidx.fragment:fragment:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.jcodecraeer:xrecyclerview:1.5.9'
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.2'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.room:room-runtime:2.1.0-alpha03'
-    implementation "android.arch.paging:runtime:1.0.1"
+    implementation 'android.arch.paging:runtime:1.0.1'
 
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:9.0.1'
-
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:1.8.0'
 
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'org.mp4parser:isoparser:1.9.34'
+    implementation 'org.mp4parser:muxer:1.9.34'
+
     implementation('com.google.api-client:google-api-client-android:1.25.0') {
         exclude group: 'org.apache.httpcomponents'
         exclude group: 'com.google.guava'
