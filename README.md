@@ -2,11 +2,11 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Android app to set Whatsapp status from youtube
+Android app to set Whatsapp status from youtube, [Download](http://docs.google.com/uc?export=document&id=1ce35W-tWClUdsVltDYlivA9r4U63QmbM).
 
 ## License
 
-    Copyright (c) 2018 Jaisel Rahman
+    Copyright (c) 2019 Jaisel Rahman
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
