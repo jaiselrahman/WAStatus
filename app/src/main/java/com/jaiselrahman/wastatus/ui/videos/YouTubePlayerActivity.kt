@@ -1,4 +1,4 @@
-package com.jaiselrahman.wastatus.ui
+package com.jaiselrahman.wastatus.ui.videos
 
 import android.content.Context
 import android.content.Intent

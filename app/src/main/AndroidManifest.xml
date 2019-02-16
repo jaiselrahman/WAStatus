@@ -26,9 +26,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.YouTubePlayerActivity"
+            android:name=".ui.videos.YouTubePlayerActivity"
             android:screenOrientation="userLandscape"
             android:theme="@style/AppTheme.FullScreen" />
+        <activity android:name=".ui.AboutActivity" />
+        <activity android:name=".ui.LicenseActivity" />
 
         <service
             android:name=".service.VideoDownloaderService"

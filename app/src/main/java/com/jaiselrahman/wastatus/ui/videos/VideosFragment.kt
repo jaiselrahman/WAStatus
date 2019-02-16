@@ -24,7 +24,6 @@ import com.jaiselrahman.wastatus.App
 import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.service.VideoDownloaderService
-import com.jaiselrahman.wastatus.ui.YouTubePlayerActivity
 import com.jaiselrahman.wastatus.util.NetworkUtil
 import com.jcodecraeer.xrecyclerview.LoadingMoreFooter
 import com.jcodecraeer.xrecyclerview.XRecyclerView
