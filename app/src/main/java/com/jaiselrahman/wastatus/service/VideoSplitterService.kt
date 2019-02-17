@@ -26,7 +26,7 @@ class VideoSplitterService : IntentService("VideoSplitterService") {
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setSmallIcon(R.drawable.ic_notification)
             .setCategory(NotificationCompat.CATEGORY_PROGRESS)
             .setProgress(0, 0, true)
             .setContentTitle(getString(R.string.splitting))

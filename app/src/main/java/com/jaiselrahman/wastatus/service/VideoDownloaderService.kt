@@ -218,7 +218,7 @@ class VideoDownloaderService : IntentService("VideoDownloader") {
 
     private fun getNotificationBuilder(): NotificationCompat.Builder {
         return NotificationCompat.Builder(App.getContext(), App.DOWNLOAD_NOTIFY_CHANNEL)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setSmallIcon(R.drawable.ic_notification)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
             .setCategory(NotificationCompat.CATEGORY_PROGRESS)

@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
             if (intent?.action == App.ACTION_VIEW_RESULT) {
                 val viewIntent = Intent(context, MainActivity::class.java)
                     .putExtra(MainActivity.VIDEO_PATH, intent.getStringExtra(MainActivity.VIDEO_PATH))
-                    .putExtra(MainActivity.SPLITTED_VIDEOS, intent.getBooleanExtra(MainActivity.VIDEO_PATH, true))
+                    .putExtra(MainActivity.SPLITTED_VIDEOS, intent.getBooleanExtra(MainActivity.SPLITTED_VIDEOS, true))
                 context?.startActivity(viewIntent)
             }
         }
