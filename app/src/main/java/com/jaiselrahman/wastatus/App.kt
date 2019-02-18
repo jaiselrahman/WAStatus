@@ -10,12 +10,16 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
+import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import com.jaiselrahman.wastatus.util.VideoUtils
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler
+import io.fabric.sdk.android.Fabric
 import java.io.File
 
 class App : Application() {
@@ -52,6 +56,13 @@ class App : Application() {
                 }).build()
         )
 
+        Log.i(App.TAG, "Crashlytics Enable : ${!BuildConfig.DEBUG}")
+        Fabric.with(
+            this,
+            Crashlytics.Builder()
+                .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build()
+        )
         notificationManager = NotificationManagerCompat.from(this)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
