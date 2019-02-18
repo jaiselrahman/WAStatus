@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.video_list_item.view.*
 import kotlinx.android.synthetic.main.video_lists.view.*
 
 class VideosFragment : Fragment() {
+    private lateinit var videosViewModel: BaseViewModel
     private lateinit var videoListAdapter: VideoListAdapter
     private lateinit var videoList: XRecyclerView
 
@@ -51,8 +52,13 @@ class VideosFragment : Fragment() {
             Toast.makeText(context, R.string.error_network_not_available, Toast.LENGTH_SHORT).show()
         }
 
-        val videosViewModel = ViewModelProviders.of(this)
-            .get(VideosViewModel::class.java)
+        videosViewModel = if (arguments?.containsKey(SEARCH) != true) {
+            ViewModelProviders.of(this)
+                .get(PlaylistViewModel::class.java)
+        } else {
+            ViewModelProviders.of(this, VideoSearchViewModel.Factory(arguments?.getString(SEARCH) ?: ""))
+                .get(VideoSearchViewModel::class.java)
+        }
 
         videosViewModel.getLivePagedList().observe(this, Observer {
             videoListAdapter.submitList(it)
@@ -150,10 +156,12 @@ class VideosFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        videosViewModel.reset()
         videoList.destroy()
     }
 
     companion object {
         internal const val REQUEST_PERMISSION = 1003
+        const val SEARCH = "SEARCH"
     }
 }

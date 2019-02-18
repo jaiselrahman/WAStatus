@@ -5,12 +5,12 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.jaiselrahman.wastatus.data.VideoDataSource
+import com.jaiselrahman.wastatus.data.PlaylistDataSource
 import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.model.Video
 
-class VideosViewModel : ViewModel() {
-    private var dataSourceFactory: VideoDataSource.Factory
+class PlaylistViewModel : ViewModel(), BaseViewModel {
+    private var dataSourceFactory: PlaylistDataSource.Factory
     private var livePagedList: LiveData<PagedList<Video>>
     private var status: LiveData<Status>
 
@@ -22,7 +22,7 @@ class VideosViewModel : ViewModel() {
             .setPrefetchDistance(PREFETCH_SIZE)
             .build()
 
-        dataSourceFactory = VideoDataSource.Factory(PAGE_SIZE.toLong())
+        dataSourceFactory = PlaylistDataSource.Factory(PAGE_SIZE.toLong())
         status = Transformations.switchMap(dataSourceFactory.liveDataSource()) {
             it.status
         }
@@ -31,15 +31,15 @@ class VideosViewModel : ViewModel() {
             .build()
     }
 
-    fun getLivePagedList(): LiveData<PagedList<Video>> {
+    override fun getLivePagedList(): LiveData<PagedList<Video>> {
         return livePagedList
     }
 
-    fun getStatus(): LiveData<Status> {
+    override fun getStatus(): LiveData<Status> {
         return status
     }
 
-    fun reset() {
+    override fun reset() {
         dataSourceFactory.reset()
     }
 

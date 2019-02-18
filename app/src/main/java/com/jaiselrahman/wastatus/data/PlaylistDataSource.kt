@@ -6,18 +6,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.PositionalDataSource
 import com.jaiselrahman.wastatus.App
-import com.jaiselrahman.wastatus.data.api.ApiService
+import com.jaiselrahman.wastatus.data.api.PlaylistVideoApi
 import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.data.db.DB
 import com.jaiselrahman.wastatus.model.Video
 import com.jaiselrahman.wastatus.util.NetworkUtil
 
-class VideoDataSource(pageSize: Long) : PositionalDataSource<Video>() {
+class PlaylistDataSource(pageSize: Long) : PositionalDataSource<Video>() {
     private val videoDao = DB.videoDao
     private val dataSource = videoDao.getVideos().create() as PositionalDataSource<Video>
 
     init {
-        ApiService.pageSize = pageSize
+        PlaylistVideoApi.pageSize = pageSize
     }
 
     val status = MutableLiveData<Status>()
@@ -43,7 +43,7 @@ class VideoDataSource(pageSize: Long) : PositionalDataSource<Video>() {
         if (!NetworkUtil.isNetworkAvailable()) return
         postValue(Status.START)
         try {
-            val videos = ApiService.loadVideos(pos)
+            val videos = PlaylistVideoApi.loadVideos(pos)
             Log.i(App.TAG, "Loaded ${videos.size} videos")
             videoDao.insertVideos(videos)
             postValue(Status.SUCCESS)
@@ -52,7 +52,7 @@ class VideoDataSource(pageSize: Long) : PositionalDataSource<Video>() {
             Log.e(App.TAG, e.message, e)
         }
 
-        if (ApiService.isLoaded)
+        if (PlaylistVideoApi.isLoaded)
             postValue(Status.COMPLETE)
     }
 
@@ -68,23 +68,23 @@ class VideoDataSource(pageSize: Long) : PositionalDataSource<Video>() {
     }
 
     class Factory(private val pageSize: Long) : DataSource.Factory<Int, Video>() {
-        private var videoDataSource: VideoDataSource? = null
-        private var liveDataSource = MutableLiveData<VideoDataSource>()
+        private var videoLoadDataSource: PlaylistDataSource? = null
+        private var liveDataSource = MutableLiveData<PlaylistDataSource>()
 
         override fun create(): DataSource<Int, Video> {
-            videoDataSource = VideoDataSource(pageSize)
-            videoDataSource?.addInvalidatedCallback {
-                ApiService.reset()
+            videoLoadDataSource = PlaylistDataSource(pageSize)
+            videoLoadDataSource?.addInvalidatedCallback {
+                PlaylistVideoApi.reset()
             }
-            liveDataSource.postValue(videoDataSource)
-            return videoDataSource!!
+            liveDataSource.postValue(videoLoadDataSource)
+            return videoLoadDataSource!!
         }
 
         fun reset() {
-            videoDataSource?.invalidate()
+            videoLoadDataSource?.invalidate()
         }
 
-        fun liveDataSource(): LiveData<VideoDataSource> {
+        fun liveDataSource(): LiveData<PlaylistDataSource> {
             return liveDataSource
         }
     }

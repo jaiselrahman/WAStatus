@@ -44,4 +44,6 @@
     <string name="licenses">Licenses</string>
     <string name="share">Share</string>
     <string name="about">About</string>
+    <string name="search">Search</string>
+    <string name="search_youtube">Search YouTube</string>
 </resources>

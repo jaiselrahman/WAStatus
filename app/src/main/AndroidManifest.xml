@@ -19,7 +19,8 @@
         tools:replace="android:allowBackup">
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="false"/>
+            android:value="false" />
+
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="userPortrait">
@@ -34,6 +35,17 @@
             android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".ui.AboutActivity" />
         <activity android:name=".ui.LicenseActivity" />
+        <activity
+            android:name=".ui.SearchResultActivity"
+            android:label="@string/videos"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".service.VideoDownloaderService"
