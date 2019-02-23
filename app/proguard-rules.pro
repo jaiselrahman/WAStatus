@@ -51,3 +51,7 @@
 -dontwarn org.junit.rules.**
 -dontwarn org.slf4j.**
 -dontwarn android.test.**
+
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception

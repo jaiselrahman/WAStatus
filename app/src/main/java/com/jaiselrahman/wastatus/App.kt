@@ -15,6 +15,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.jaiselrahman.wastatus.util.VideoUtils
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
@@ -63,6 +64,7 @@ class App : Application() {
                 .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .build()
         )
+
         notificationManager = NotificationManagerCompat.from(this)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
