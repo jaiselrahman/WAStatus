@@ -24,6 +24,7 @@ import com.jaiselrahman.wastatus.App
 import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.service.VideoDownloaderService
+import com.jaiselrahman.wastatus.ui.base.BaseViewModel
 import com.jaiselrahman.wastatus.util.NetworkUtil
 import com.jcodecraeer.xrecyclerview.LoadingMoreFooter
 import com.jcodecraeer.xrecyclerview.XRecyclerView
@@ -108,8 +109,7 @@ class VideosFragment : Fragment() {
                     YouTubePlayerActivity.play(context!!, video.id)
 
                 ViewType.SHARE -> ShareCompat.IntentBuilder.from(activity)
-                    .setStream(Uri.parse(video.url))
-                    .setType("text/plain")
+                    .setText(video.url)
                     .setChooserTitle(getString(R.string.share_video))
                     .apply { intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION) }
                     .startChooser()
@@ -156,7 +156,6 @@ class VideosFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        videosViewModel.reset()
         videoList.destroy()
     }
 

@@ -10,6 +10,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetView
 import com.jaiselrahman.wastatus.App
 import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.ui.downloads.DownloadsFragment
@@ -38,6 +40,9 @@ class MainActivity : AppCompatActivity() {
             viewPager.adapter = MainViewPager(supportFragmentManager)
             bottomNavigation.setupWithViewPager(viewPager)
             bottomNavigation.enableAnimation(false)
+            if (intent.hasExtra(VIDEO_PATH)) {
+                viewPager.currentItem = 1
+            }
         }
 
         if (savedInstanceState == null) {
@@ -57,12 +62,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showTapTargets() {
+        if (!App.isShownTapTargetForSearch) {
+            TapTargetView.showFor(
+                this,
+                TapTarget.forView(searchView, getString(R.string.search), getString(R.string.search_desc))
+            )
+            App.isShownTapTargetForSearch = true
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         searchView = (menu.findItem(R.id.search).actionView as SearchView).also {
             it.setSearchableInfo(searchManager.getSearchableInfo(ComponentName(this, SearchResultActivity::class.java)))
         }
+        showTapTargets()
         return true
     }
 

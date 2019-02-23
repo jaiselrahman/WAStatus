@@ -1,4 +1,4 @@
-package com.jaiselrahman.wastatus.ui.videos
+package com.jaiselrahman.wastatus.ui.base
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList

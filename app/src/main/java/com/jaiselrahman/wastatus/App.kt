@@ -87,6 +87,7 @@ class App : Application() {
 
         private const val SHOWN_FOR_VIDEOS = "SHOWN_FOR_VIDEOS"
         private const val SHOWN_FOR_DOWNLOADS = "SHOWN_FOR_DOWNLOADS"
+        private const val SHOWN_FOR_SEARCH = "SHOWN_FOR_SEARCH"
 
         internal const val DOWNLOAD_NOTIFY_ID = 100
         internal const val TAG = APP_NAME
@@ -114,6 +115,16 @@ class App : Application() {
             }
             get() {
                 return app.sharedPreferences.getBoolean(SHOWN_FOR_DOWNLOADS, false)
+            }
+
+        var isShownTapTargetForSearch: Boolean
+            set(value) {
+                app.sharedPreferences.edit()
+                    .putBoolean(SHOWN_FOR_SEARCH, value)
+                    .apply()
+            }
+            get() {
+                return app.sharedPreferences.getBoolean(SHOWN_FOR_SEARCH, false)
             }
 
         fun getApiKey() = app.apiKey

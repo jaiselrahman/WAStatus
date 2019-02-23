@@ -34,6 +34,7 @@ class VideoListAdapter : PagedListAdapter<Video, VideoListAdapter.ViewHolder>(DI
             super.onBindViewHolder(holder, position, payloads)
             return
         }
+        @Suppress("UNCHECKED_CAST")
         holder.bind(payloads[0] as Map<String, Long>)
     }
 

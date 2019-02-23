@@ -9,6 +9,7 @@ import androidx.paging.PagedList
 import com.jaiselrahman.wastatus.data.VideoSearchDataSource
 import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.model.Video
+import com.jaiselrahman.wastatus.ui.base.BaseViewModel
 
 class VideoSearchViewModel private constructor(query: String) : ViewModel(), BaseViewModel {
     private var searchDataSourceFactory: VideoSearchDataSource.Factory

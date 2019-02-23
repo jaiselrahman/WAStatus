@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -28,18 +29,32 @@ class SearchResultActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent) {
-        if (Intent.ACTION_SEARCH == intent.action) {
-            val query = intent.getStringExtra(SearchManager.QUERY)
-            supportFragmentManager.beginTransaction()
-                .replace(android.R.id.content, VideosFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(VideosFragment.SEARCH, query)
-                    }
-                }).commit()
-        } else {
-            Toast.makeText(this, "Invalid search", Toast.LENGTH_SHORT).show()
-            finish()
+        val query = when (intent.action) {
+            Intent.ACTION_SEARCH -> {
+                intent.getStringExtra(SearchManager.QUERY)
+            }
+            Intent.ACTION_VIEW -> {
+                intent.dataString ?: ""
+            }
+            Intent.ACTION_SEND -> {
+                if (intent.hasExtra(Intent.EXTRA_TEXT))
+                    intent.getStringExtra(Intent.EXTRA_TEXT)
+                else
+                    intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM).toString()
+            }
+            else -> {
+                Toast.makeText(this, "Invalid search", Toast.LENGTH_SHORT).show()
+                finish()
+                return
+            }
         }
+
+        supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, VideosFragment().apply {
+                arguments = Bundle().apply {
+                    putString(VideosFragment.SEARCH, query)
+                }
+            }).commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

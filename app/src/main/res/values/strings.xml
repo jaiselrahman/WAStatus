@@ -37,6 +37,7 @@
     <string name="split_failed">Split failed</string>
     <string name="videos">Videos</string>
     <string name="download">Download</string>
+    <string name="download_video">Download Video</string>
     <string name="download_desc">Download your favorite videos locally</string>
     <string name="split_desc">Split videos for Whatsapp status</string>
     <string name="open_in_whatsapp">Open in Whatsapp</string>
@@ -45,5 +46,6 @@
     <string name="share">Share</string>
     <string name="about">About</string>
     <string name="search">Search</string>
-    <string name="search_youtube">Search YouTube</string>
+    <string name="search_hint">Search or Paste YT link</string>
+    <string name="search_desc">Search YouTube or enter YouTube video link</string>
 </resources>

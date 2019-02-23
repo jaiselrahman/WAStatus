@@ -14,6 +14,15 @@ object VideoSearchApi {
     }
 
     fun searchVideos(query: String, token: String? = null): List<Video> {
+        if (query.startsWith("http")) {
+            val vId = Companion.getVideoId(query)
+            return if (vId != null) {
+                isLoaded = true
+                ApiUtil.getVideos(listOf(vId))
+            } else {
+                emptyList()
+            }
+        }
         val searchResult = ApiUtil.youTubeService.search()
             .list("snippet").apply {
                 maxResults = pageSize
@@ -35,4 +44,12 @@ object VideoSearchApi {
     }
 
     class PageToken(var prevToken: String?, var nextToken: String?)
+
+    object Companion {
+        private val regex by lazy {
+            Regex("^((?:https?:)?//)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(/(?:[\\w\\-]+\\?v=|embed/|v/)?)([\\w\\-]+)(\\S+)?\$")
+        }
+
+        fun getVideoId(url: String) = regex.find(url)?.groups?.get(5)?.value
+    }
 }

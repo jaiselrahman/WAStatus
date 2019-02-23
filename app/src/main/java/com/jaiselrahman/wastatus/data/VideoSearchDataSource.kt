@@ -49,7 +49,11 @@ class VideoSearchDataSource(private val query: String, pageSize: Long) : PageKey
         try {
             videos = VideoSearchApi.searchVideos(query, key)
             Log.i(App.TAG, "Search Loaded ${videos.size} videos")
-            postValue(Status.SUCCESS)
+            if (videos.isEmpty()) {
+                postValue(Status.ERROR)
+            } else {
+                postValue(Status.SUCCESS)
+            }
         } catch (e: Exception) {
             videos = listOf()
             postValue(Status.ERROR)
