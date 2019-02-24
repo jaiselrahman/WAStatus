@@ -14,16 +14,18 @@
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+
 -dontwarn okhttp3.internal.platform.*
 -dontwarn com.squareup.okhttp3.**
 -keep class com.squareup.okhttp.* { *; }
--dontwarn okio
+-dontwarn okio.**
 
 -keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
 -keepclassmembers class * {
@@ -41,17 +43,21 @@
 -dontwarn com.google.common.base.Splitter
 
 
--keep public class com.google.android.material.** { *; }
+-keep public class com.google.android.material.bottomnavigation.** { *; }
 -dontnote com.google.android.material.**
 -dontwarn com.google.android.material.**
 
--keep public class org.mp4parser.** { *; }
+#-keep public class * implements org.mp4parser.Box { *; }
+-keep public class org.mp4parser.boxes.iso14496.part12.* { *; }
+-keep public class org.mp4parser.boxes.iso14496.part14.ESDescriptorBox { *; }
+-keep public class org.mp4parser.boxes.iso14496.part15.AvcConfigurationBox { *; }
+-keep public class org.mp4parser.boxes.sampleentry.VisualSampleEntry { *; }
+-keep public class org.mp4parser.boxes.sampleentry.AudioSampleEntry { *; }
+-keep public class org.mp4parser.boxes.apple.PixelAspectRationAtom { *; }
+-keep public class org.mp4parser.boxes.UnknownBox { *; } 
 -dontwarn org.mp4parser.**
+
 -dontwarn org.junit.internal.runners.**
 -dontwarn org.junit.rules.**
 -dontwarn org.slf4j.**
 -dontwarn android.test.**
-
--keepattributes *Annotation*
--keepattributes SourceFile,LineNumberTable
--keep public class * extends java.lang.Exception
