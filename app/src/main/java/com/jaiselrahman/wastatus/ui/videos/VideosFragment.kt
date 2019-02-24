@@ -1,7 +1,6 @@
 package com.jaiselrahman.wastatus.ui.videos
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -145,22 +144,12 @@ class VideosFragment : Fragment() {
         App.isShownTapTargetForVideos = true
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(context, getString(R.string.request_permission), Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         videoList.destroy()
     }
 
     companion object {
-        internal const val REQUEST_PERMISSION = 1003
         const val SEARCH = "SEARCH"
     }
 }

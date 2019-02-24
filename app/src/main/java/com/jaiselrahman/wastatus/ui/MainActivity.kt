@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.getkeepsafe.taptargetview.TapTarget
@@ -15,7 +16,6 @@ import com.getkeepsafe.taptargetview.TapTargetView
 import com.jaiselrahman.wastatus.App
 import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.ui.downloads.DownloadsFragment
-import com.jaiselrahman.wastatus.ui.videos.VideosFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -56,19 +56,8 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             requestPermissions(
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                VideosFragment.REQUEST_PERMISSION
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION
             )
-        }
-    }
-
-    private fun showTapTargets() {
-        if (!App.isShownTapTargetForSearch) {
-            TapTargetView.showFor(
-                this,
-                TapTarget.forView(searchView, getString(R.string.search), getString(R.string.search_desc))
-            )
-            App.isShownTapTargetForSearch = true
         }
     }
 
@@ -78,8 +67,28 @@ class MainActivity : AppCompatActivity() {
         searchView = (menu.findItem(R.id.search).actionView as SearchView).also {
             it.setSearchableInfo(searchManager.getSearchableInfo(ComponentName(this, SearchResultActivity::class.java)))
         }
-        showTapTargets()
         return true
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(this, getString(R.string.request_permission), Toast.LENGTH_SHORT).show()
+            }
+        }
+        showTapTargets()
+    }
+
+
+    private fun showTapTargets() {
+        if (!App.isShownTapTargetForSearch) {
+            TapTargetView.showFor(
+                this,
+                TapTarget.forView(searchView, getString(R.string.search), getString(R.string.search_desc))
+            )
+            App.isShownTapTargetForSearch = true
+        }
     }
 
     override fun onBackPressed() {
@@ -122,6 +131,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+        internal const val REQUEST_PERMISSION = 1003
         const val VIDEO_PATH = "VIDEO_PATH"
         const val SPLITTED_VIDEOS = "SPLITTED_VIDEOS"
     }
