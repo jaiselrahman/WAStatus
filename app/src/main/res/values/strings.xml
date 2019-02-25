@@ -48,4 +48,5 @@
     <string name="search">Search</string>
     <string name="search_hint">Search or Paste YT link</string>
     <string name="search_desc">Search YouTube or enter YouTube video link</string>
+    <string name="play_video">Play video</string>
 </resources>
