@@ -119,7 +119,8 @@ class DownloadsFragment : Fragment() {
             Regex(".*[^0-9]${VideoUtils.VIDEO_EXT}$")
         } else {
             val filePath = arguments?.getString(App.VIDEO_PATH) ?: ""
-            Regex("${filePath.substringAfterLast("/").substringBefore(".")}[0-9]{2}${VideoUtils.VIDEO_EXT}$")
+            val fileName = filePath.substringAfterLast("/").substringBefore(".")
+            Regex("${Regex.escape(fileName)}[0-9]{2}${VideoUtils.VIDEO_EXT}$")
         }
 
         return App.getAppDir().listFiles(FileFilter { it.name.matches(fileRegex) })?.sortedBy { it.name } ?: emptyList()
