@@ -10,14 +10,6 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 object Utils {
-    fun getConvertedFile(folder: String, fileName: String): File {
-        val f = File(folder)
-
-        if (!f.exists())
-            f.mkdirs()
-
-        return File(f.path + File.separator + fileName)
-    }
 
     fun writeResponseToFile(
         responseBody: ResponseBody,
@@ -78,4 +70,8 @@ private val decimalFormat by lazy {
     val decimalFormat = DecimalFormat("#,##0.#")
     decimalFormat.roundingMode = RoundingMode.FLOOR
     decimalFormat
+}
+
+fun Context.scanFile(uri: Uri) {
+    sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri))
 }

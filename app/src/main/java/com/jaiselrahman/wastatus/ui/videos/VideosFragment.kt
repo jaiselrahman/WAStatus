@@ -1,5 +1,6 @@
 package com.jaiselrahman.wastatus.ui.videos
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -109,6 +110,7 @@ class VideosFragment : Fragment() {
 
                 ViewType.SHARE -> ShareCompat.IntentBuilder.from(activity)
                     .setText(video.url)
+                    .setType("text/plain")
                     .setChooserTitle(getString(R.string.share_video))
                     .apply { intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION) }
                     .startChooser()
@@ -120,6 +122,7 @@ class VideosFragment : Fragment() {
                     val intent = Intent(context, VideoDownloaderService::class.java)
                         .putExtra(App.VIDEO_URL, video.url)
                     ContextCompat.startForegroundService(context!!, intent)
+                    Toast.makeText(context, R.string.check_download_status, Toast.LENGTH_SHORT).show()
                 }
             }
         }

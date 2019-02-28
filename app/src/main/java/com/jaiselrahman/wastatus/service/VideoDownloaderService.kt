@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.util.Log
 import android.util.SparseArray
 import androidx.core.app.NotificationCompat
@@ -20,6 +21,7 @@ import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.ui.MainActivity
 import com.jaiselrahman.wastatus.util.Utils
 import com.jaiselrahman.wastatus.util.VideoUtils
+import com.jaiselrahman.wastatus.util.scanFile
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
@@ -148,6 +150,7 @@ class VideoDownloaderService : IntentService("VideoDownloader") {
                 .setContentIntent(viewAction.actionIntent),
             done = true
         )
+        scanFile(Uri.fromFile(destFile));
         Log.i(App.TAG, "Service finished")
     }
 
@@ -203,7 +206,6 @@ class VideoDownloaderService : IntentService("VideoDownloader") {
         notificationBuilder.setAutoCancel(false)
         notificationBuilder.setOngoing(true)
         if (done) {
-
             notificationBuilder.setProgress(0, 0, false)
             notificationManager.notify(App.DOWNLOAD_NOTIFY_ID, notificationBuilder.build())
         } else {
@@ -219,7 +221,7 @@ class VideoDownloaderService : IntentService("VideoDownloader") {
     private fun getNotificationBuilder(): NotificationCompat.Builder {
         return NotificationCompat.Builder(App.getContext(), App.DOWNLOAD_NOTIFY_CHANNEL)
             .setSmallIcon(R.drawable.ic_notification)
-            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
             .setCategory(NotificationCompat.CATEGORY_PROGRESS)
             .setProgress(0, 0, true)

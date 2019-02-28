@@ -15,7 +15,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.jaiselrahman.wastatus.util.VideoUtils
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
@@ -71,7 +70,7 @@ class App : Application() {
             val notificationChannel = NotificationChannel(
                 DOWNLOAD_NOTIFY_CHANNEL,
                 getString(R.string.download_notifications),
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_LOW
             )
             notificationManager.createNotificationChannel(notificationChannel)
         }

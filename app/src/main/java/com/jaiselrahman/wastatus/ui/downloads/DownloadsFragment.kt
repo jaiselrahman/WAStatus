@@ -50,6 +50,7 @@ class DownloadsFragment : Fragment() {
                     val splitIntent = Intent(context, VideoSplitterService::class.java)
                         .putExtra(App.VIDEO_PATH, file.path)
                     ContextCompat.startForegroundService(context!!, splitIntent)
+                    Toast.makeText(context, R.string.check_split_status, Toast.LENGTH_SHORT).show()
                 }
                 DownloadsAdapter.ButtonType.SHARE -> {
                     ShareCompat.IntentBuilder.from(activity)

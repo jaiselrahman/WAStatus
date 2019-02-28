@@ -49,4 +49,6 @@
     <string name="search_hint">Search or Paste YT link</string>
     <string name="search_desc">Search YouTube or enter YouTube video link</string>
     <string name="play_video">Play video</string>
+    <string name="check_download_status">Downloading, check notification for status.</string>
+    <string name="check_split_status">Splitting video, check notification for status</string>
 </resources>
