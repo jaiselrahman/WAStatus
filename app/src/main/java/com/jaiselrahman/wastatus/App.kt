@@ -15,11 +15,18 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.jaiselrahman.wastatus.di.apiModule
+import com.jaiselrahman.wastatus.di.appModule
+import com.jaiselrahman.wastatus.di.dataSourceModule
+import com.jaiselrahman.wastatus.di.dbModule
 import com.jaiselrahman.wastatus.util.VideoUtils
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Request
 import com.squareup.picasso.RequestHandler
 import io.fabric.sdk.android.Fabric
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import java.io.File
 
 class App : Application() {
@@ -32,6 +39,10 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
+
+        startKoin {
+            modules(listOf(dbModule, apiModule, dataSourceModule, appModule))
+        }
 
         apiKey = getString(R.string.api_key)
         playlistId = getString(R.string.playlist_id)

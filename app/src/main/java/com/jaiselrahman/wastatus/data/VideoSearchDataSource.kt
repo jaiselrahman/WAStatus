@@ -11,18 +11,22 @@ import com.jaiselrahman.wastatus.data.api.VideoSearchApi
 import com.jaiselrahman.wastatus.model.Video
 import com.jaiselrahman.wastatus.util.NetworkUtil
 
-class VideoSearchDataSource(private val query: String, pageSize: Long) : PageKeyedDataSource<String, Video>() {
-    init {
-        VideoSearchApi.pageSize = pageSize
-    }
+class VideoSearchDataSource(
+    private val videoSearchApi: VideoSearchApi,
+    private val query: String
+) : PageKeyedDataSource<String, Video>() {
 
     val status = MutableLiveData<Status>()
-    override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<String, Video>) {
+
+    override fun loadInitial(
+        params: LoadInitialParams<String>,
+        callback: LoadInitialCallback<String, Video>
+    ) {
         val videos = getVideos()
         callback.onResult(
             videos,
-            VideoSearchApi.searchResultToken.prevToken,
-            VideoSearchApi.searchResultToken.nextToken
+            videoSearchApi.searchResultToken.prevToken,
+            videoSearchApi.searchResultToken.nextToken
         )
     }
 
@@ -30,7 +34,7 @@ class VideoSearchDataSource(private val query: String, pageSize: Long) : PageKey
         val videos = getVideos(params.key)
         callback.onResult(
             videos,
-            VideoSearchApi.searchResultToken.nextToken
+            videoSearchApi.searchResultToken.nextToken
         )
     }
 
@@ -38,7 +42,7 @@ class VideoSearchDataSource(private val query: String, pageSize: Long) : PageKey
         val videos = getVideos(params.key)
         callback.onResult(
             videos,
-            VideoSearchApi.searchResultToken.prevToken
+            videoSearchApi.searchResultToken.prevToken
         )
     }
 
@@ -47,7 +51,7 @@ class VideoSearchDataSource(private val query: String, pageSize: Long) : PageKey
         postValue(Status.START)
         lateinit var videos: List<Video>
         try {
-            videos = VideoSearchApi.searchVideos(query, key)
+            videos = videoSearchApi.searchVideos(query, key)
             Log.i(App.TAG, "Search Loaded ${videos.size} videos")
             if (videos.isEmpty()) {
                 postValue(Status.ERROR)
@@ -60,7 +64,7 @@ class VideoSearchDataSource(private val query: String, pageSize: Long) : PageKey
             Log.e(App.TAG, e.message, e)
         }
 
-        if (VideoSearchApi.isLoaded)
+        if (videoSearchApi.isLoaded)
             postValue(Status.COMPLETE)
         return videos
     }
@@ -71,21 +75,26 @@ class VideoSearchDataSource(private val query: String, pageSize: Long) : PageKey
         }
     }
 
-    class Factory(private val query: String, private val pageSize: Long) : DataSource.Factory<String, Video>() {
+    class Factory(
+        private val videoSearchApi: VideoSearchApi,
+        private val query: String,
+        private val pageSize: Long
+    ) : DataSource.Factory<String, Video>() {
         private var videoDataSource: VideoSearchDataSource? = null
         private var liveDataSource = MutableLiveData<VideoSearchDataSource>()
 
         override fun create(): DataSource<String, Video> {
-            videoDataSource = VideoSearchDataSource(query, pageSize)
+            videoSearchApi.pageSize = pageSize
+            videoDataSource = VideoSearchDataSource(videoSearchApi, query)
             videoDataSource?.addInvalidatedCallback {
-                VideoSearchApi.reset()
+                videoSearchApi.reset()
             }
             liveDataSource.postValue(videoDataSource)
             return videoDataSource!!
         }
 
         fun reset() {
-            VideoSearchApi.reset()
+            videoSearchApi.reset()
             videoDataSource?.invalidate()
         }
 

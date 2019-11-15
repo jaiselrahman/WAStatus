@@ -22,8 +22,7 @@
             android:value="false" />
 
         <activity
-            android:name=".ui.MainActivity"
-            android:screenOrientation="userPortrait">
+            android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -38,8 +37,7 @@
         <activity
             android:name=".ui.SearchResultActivity"
             android:exported="true"
-            android:label="@string/videos"
-            android:launchMode="singleTop">
+            android:label="@string/videos">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

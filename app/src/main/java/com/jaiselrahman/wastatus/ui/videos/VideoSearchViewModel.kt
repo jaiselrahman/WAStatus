@@ -3,7 +3,6 @@ package com.jaiselrahman.wastatus.ui.videos
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.jaiselrahman.wastatus.data.VideoSearchDataSource
@@ -11,8 +10,9 @@ import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.model.Video
 import com.jaiselrahman.wastatus.ui.base.BaseViewModel
 
-class VideoSearchViewModel private constructor(query: String) : ViewModel(), BaseViewModel {
-    private var searchDataSourceFactory: VideoSearchDataSource.Factory
+class VideoSearchViewModel constructor(
+    private val searchDataSourceFactory: VideoSearchDataSource.Factory
+) : ViewModel(), BaseViewModel {
     private var livePagedList: LiveData<PagedList<Video>>
     private var status: LiveData<Status>
 
@@ -24,7 +24,6 @@ class VideoSearchViewModel private constructor(query: String) : ViewModel(), Bas
             .setPrefetchDistance(PlaylistViewModel.PREFETCH_SIZE)
             .build()
 
-        searchDataSourceFactory = VideoSearchDataSource.Factory(query, PlaylistViewModel.PAGE_SIZE.toLong())
         status = Transformations.switchMap(searchDataSourceFactory.liveDataSource()) {
             it.status
         }
@@ -43,16 +42,4 @@ class VideoSearchViewModel private constructor(query: String) : ViewModel(), Bas
     override fun reset() {
         searchDataSourceFactory.reset()
     }
-
-    class Factory(private val query: String) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            try {
-                @Suppress("UNCHECKED_CAST")
-                return VideoSearchViewModel(query) as T
-            } catch (e: Exception) {
-                throw RuntimeException("Cannot create an instance of $modelClass", e)
-            }
-        }
-    }
-
 }

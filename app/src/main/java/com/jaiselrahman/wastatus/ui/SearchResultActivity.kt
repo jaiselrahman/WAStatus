@@ -20,7 +20,8 @@ class SearchResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        handleIntent(intent)
+        if(savedInstanceState == null)
+            handleIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent) {

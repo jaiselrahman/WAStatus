@@ -8,17 +8,16 @@ import androidx.paging.PositionalDataSource
 import com.jaiselrahman.wastatus.App
 import com.jaiselrahman.wastatus.data.api.PlaylistVideoApi
 import com.jaiselrahman.wastatus.data.api.Status
-import com.jaiselrahman.wastatus.data.db.DB
+import com.jaiselrahman.wastatus.data.db.VideoDao
 import com.jaiselrahman.wastatus.model.Video
 import com.jaiselrahman.wastatus.util.NetworkUtil
 
-class PlaylistDataSource(pageSize: Long) : PositionalDataSource<Video>() {
-    private val videoDao = DB.videoDao
-    private val dataSource = videoDao.getVideos().create() as PositionalDataSource<Video>
+class PlaylistDataSource(
+    private val playlistVideoApi: PlaylistVideoApi,
+    private val videoDao: VideoDao
+) : PositionalDataSource<Video>() {
 
-    init {
-        PlaylistVideoApi.pageSize = pageSize
-    }
+    private val dataSource = videoDao.getVideos().create() as PositionalDataSource<Video>
 
     val status = MutableLiveData<Status>()
 
@@ -27,10 +26,9 @@ class PlaylistDataSource(pageSize: Long) : PositionalDataSource<Video>() {
         dataSource.loadInitial(params, callback)
     }
 
-
     override fun loadRange(
-        params: PositionalDataSource.LoadRangeParams,
-        callback: PositionalDataSource.LoadRangeCallback<Video>
+        params: LoadRangeParams,
+        callback: LoadRangeCallback<Video>
     ) {
         if (params.startPosition % params.loadSize != 0) {
             return
@@ -43,7 +41,7 @@ class PlaylistDataSource(pageSize: Long) : PositionalDataSource<Video>() {
         if (!NetworkUtil.isNetworkAvailable()) return
         postValue(Status.START)
         try {
-            val videos = PlaylistVideoApi.loadVideos(pos)
+            val videos = playlistVideoApi.loadVideos(pos)
             Log.i(App.TAG, "Loaded ${videos.size} videos")
             videoDao.insertVideos(videos)
             postValue(Status.SUCCESS)
@@ -52,7 +50,7 @@ class PlaylistDataSource(pageSize: Long) : PositionalDataSource<Video>() {
             Log.e(App.TAG, e.message, e)
         }
 
-        if (PlaylistVideoApi.isLoaded)
+        if (playlistVideoApi.isLoaded)
             postValue(Status.COMPLETE)
     }
 
@@ -67,14 +65,20 @@ class PlaylistDataSource(pageSize: Long) : PositionalDataSource<Video>() {
         }
     }
 
-    class Factory(private val pageSize: Long) : DataSource.Factory<Int, Video>() {
+    class Factory(
+        private val playlistVideoApi: PlaylistVideoApi,
+        private val videoDao: VideoDao,
+        private val pageSize: Long
+    ) : DataSource.Factory<Int, Video>() {
+
         private var videoLoadDataSource: PlaylistDataSource? = null
         private var liveDataSource = MutableLiveData<PlaylistDataSource>()
 
         override fun create(): DataSource<Int, Video> {
-            videoLoadDataSource = PlaylistDataSource(pageSize)
+            playlistVideoApi.pageSize = pageSize
+            videoLoadDataSource = PlaylistDataSource(playlistVideoApi, videoDao)
             videoLoadDataSource?.addInvalidatedCallback {
-                PlaylistVideoApi.reset()
+                playlistVideoApi.reset()
             }
             liveDataSource.postValue(videoLoadDataSource)
             return videoLoadDataSource!!

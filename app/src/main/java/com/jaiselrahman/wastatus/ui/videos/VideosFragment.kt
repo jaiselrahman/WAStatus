@@ -1,6 +1,5 @@
 package com.jaiselrahman.wastatus.ui.videos
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,7 +14,6 @@ import androidx.core.view.get
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.getkeepsafe.taptargetview.TapTarget
@@ -25,11 +23,14 @@ import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.service.VideoDownloaderService
 import com.jaiselrahman.wastatus.ui.base.BaseViewModel
+import com.jaiselrahman.wastatus.ui.videos.PlaylistViewModel.Companion.PAGE_SIZE
 import com.jaiselrahman.wastatus.util.NetworkUtil
 import com.jcodecraeer.xrecyclerview.LoadingMoreFooter
 import com.jcodecraeer.xrecyclerview.XRecyclerView
 import kotlinx.android.synthetic.main.video_list_item.view.*
 import kotlinx.android.synthetic.main.video_lists.view.*
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.core.parameter.parametersOf
 
 class VideosFragment : Fragment() {
     private lateinit var videosViewModel: BaseViewModel
@@ -54,14 +55,12 @@ class VideosFragment : Fragment() {
         }
 
         videosViewModel = if (arguments?.containsKey(SEARCH) != true) {
-            ViewModelProviders.of(this)
-                .get(PlaylistViewModel::class.java)
+            getViewModel<PlaylistViewModel>{ parametersOf(PAGE_SIZE) }
         } else {
-            ViewModelProviders.of(this, VideoSearchViewModel.Factory(arguments?.getString(SEARCH) ?: ""))
-                .get(VideoSearchViewModel::class.java)
+            getViewModel<VideoSearchViewModel>{ parametersOf(arguments?.getString(SEARCH) ?: "", PAGE_SIZE) }
         }
 
-        videosViewModel.getLivePagedList().observe(this, Observer {
+        videosViewModel.getLivePagedList().observe(viewLifecycleOwner, Observer {
             videoListAdapter.submitList(it)
             videoList.post {
                 videoList.scrollToPosition(0)

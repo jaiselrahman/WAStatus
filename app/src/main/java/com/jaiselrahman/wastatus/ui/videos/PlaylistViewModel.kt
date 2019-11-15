@@ -10,8 +10,10 @@ import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.model.Video
 import com.jaiselrahman.wastatus.ui.base.BaseViewModel
 
-class PlaylistViewModel : ViewModel(), BaseViewModel {
-    private var dataSourceFactory: PlaylistDataSource.Factory
+class PlaylistViewModel(
+    private val dataSourceFactory: PlaylistDataSource.Factory
+) : ViewModel(), BaseViewModel {
+
     private var livePagedList: LiveData<PagedList<Video>>
     private var status: LiveData<Status>
 
@@ -23,7 +25,6 @@ class PlaylistViewModel : ViewModel(), BaseViewModel {
             .setPrefetchDistance(PREFETCH_SIZE)
             .build()
 
-        dataSourceFactory = PlaylistDataSource.Factory(PAGE_SIZE.toLong())
         status = Transformations.switchMap(dataSourceFactory.liveDataSource()) {
             it.status
         }
