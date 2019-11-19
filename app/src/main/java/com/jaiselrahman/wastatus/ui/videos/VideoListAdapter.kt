@@ -68,10 +68,6 @@ class VideoListAdapter : PagedListAdapter<Video, VideoListAdapter.ViewHolder>(DI
             v.youtube.setOnClickListener {
                 onVideoClickListener?.invoke(video, ViewType.YOUTUBE)
             }
-
-            v.download.setOnClickListener {
-                onVideoClickListener?.invoke(video, ViewType.DOWNLOAD)
-            }
         }
 
         fun bind(payload: Map<String, Long>) {
@@ -115,6 +111,6 @@ class VideoListAdapter : PagedListAdapter<Video, VideoListAdapter.ViewHolder>(DI
 internal typealias OnVideoClickListener = (Video, ViewType) -> Unit
 
 enum class ViewType {
-    THUMBNAIL, SHARE, YOUTUBE, DOWNLOAD
+    THUMBNAIL, SHARE, YOUTUBE
 }
 

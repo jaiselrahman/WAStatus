@@ -10,24 +10,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.getkeepsafe.taptargetview.TapTarget
-import com.getkeepsafe.taptargetview.TapTargetView
 import com.jaiselrahman.wastatus.App
 import com.jaiselrahman.wastatus.R
 import com.jaiselrahman.wastatus.data.api.Status
-import com.jaiselrahman.wastatus.service.VideoDownloaderService
 import com.jaiselrahman.wastatus.ui.base.BaseViewModel
-import com.jaiselrahman.wastatus.ui.videos.PlaylistViewModel.Companion.PAGE_SIZE
+import com.jaiselrahman.wastatus.ui.playlist.PlaylistViewModel
+import com.jaiselrahman.wastatus.ui.playlist.PlaylistViewModel.Companion.PAGE_SIZE
+import com.jaiselrahman.wastatus.ui.search.VideoSearchViewModel
 import com.jaiselrahman.wastatus.util.NetworkUtil
 import com.jcodecraeer.xrecyclerview.LoadingMoreFooter
 import com.jcodecraeer.xrecyclerview.XRecyclerView
-import kotlinx.android.synthetic.main.video_list_item.view.*
 import kotlinx.android.synthetic.main.video_lists.view.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -79,6 +75,7 @@ class VideosFragment : Fragment() {
                         ).show()
                     else
                         Toast.makeText(context, R.string.error_network_not_available, Toast.LENGTH_SHORT).show()
+                    videoList.setLoadingMoreEnabled(false)
                 }
                 Status.COMPLETE -> {
                     videoList.setLoadingMoreEnabled(false)
@@ -116,13 +113,6 @@ class VideosFragment : Fragment() {
 
                 ViewType.YOUTUBE ->
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(video.url)))
-
-                ViewType.DOWNLOAD -> {
-                    val intent = Intent(context, VideoDownloaderService::class.java)
-                        .putExtra(App.VIDEO_URL, video.url)
-                    ContextCompat.startForegroundService(context!!, intent)
-                    Toast.makeText(context, R.string.check_download_status, Toast.LENGTH_SHORT).show()
-                }
             }
         }
         return view
@@ -135,15 +125,15 @@ class VideosFragment : Fragment() {
     }
 
     private fun showTapTargets() {
-        if (videoList.size <= 0 || App.isShownTapTargetForVideos) return
-        TapTargetView.showFor(
-            activity, TapTarget.forView(
-                videoList[0].rootView.download,
-                getString(R.string.download),
-                getString(R.string.download_desc)
-            )
-        )
-        App.isShownTapTargetForVideos = true
+//        if (videoList.size <= 0 || App.isShownTapTargetForVideos) return
+//        TapTargetView.showFor(
+//            activity, TapTarget.forView(
+//                videoList[0].rootView.download,
+//                getString(R.string.download),
+//                getString(R.string.download_desc)
+//            )
+//        )
+//        App.isShownTapTargetForVideos = true
     }
 
     override fun onDestroy() {

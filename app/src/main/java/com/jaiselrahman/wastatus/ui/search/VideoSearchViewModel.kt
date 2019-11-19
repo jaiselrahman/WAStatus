@@ -1,4 +1,4 @@
-package com.jaiselrahman.wastatus.ui.videos
+package com.jaiselrahman.wastatus.ui.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -9,6 +9,7 @@ import com.jaiselrahman.wastatus.data.VideoSearchDataSource
 import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.model.Video
 import com.jaiselrahman.wastatus.ui.base.BaseViewModel
+import com.jaiselrahman.wastatus.ui.playlist.PlaylistViewModel
 
 class VideoSearchViewModel constructor(
     private val searchDataSourceFactory: VideoSearchDataSource.Factory

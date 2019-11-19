@@ -22,7 +22,7 @@
             android:value="false" />
 
         <activity
-            android:name=".ui.MainActivity">
+            android:name=".ui.playlist.PlayListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,7 +35,7 @@
         <activity android:name=".ui.AboutActivity" />
         <activity android:name=".ui.LicenseActivity" />
         <activity
-            android:name=".ui.SearchResultActivity"
+            android:name=".ui.search.SearchResultActivity"
             android:exported="true"
             android:label="@string/videos">
             <meta-data
@@ -51,7 +51,7 @@
             android:name=".DownloadVideo"
             android:enabled="true"
             android:label="@string/download_video"
-            android:targetActivity=".ui.SearchResultActivity">
+            android:targetActivity=".ui.search.SearchResultActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -75,13 +75,6 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity-alias>
-
-        <service
-            android:name=".service.VideoDownloaderService"
-            android:exported="false" />
-        <service
-            android:name=".service.VideoSplitterService"
-            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

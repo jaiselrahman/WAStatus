@@ -95,20 +95,8 @@
         android:contentDescription="@string/viewInYoutube"
         android:src="@drawable/ic_youtube"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/download"
-        app:layout_constraintStart_toEndOf="@id/share"
-        app:layout_constraintTop_toBottomOf="@id/title" />
-
-    <ImageView
-        android:id="@+id/download"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:contentDescription="@string/setWhatsappStatus"
-        android:src="@drawable/ic_download"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/youtube"
+        app:layout_constraintStart_toEndOf="@id/share"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,6 @@ import com.jaiselrahman.wastatus.data.api.PlaylistVideoApi
 import com.jaiselrahman.wastatus.data.api.Status
 import com.jaiselrahman.wastatus.data.db.VideoDao
 import com.jaiselrahman.wastatus.model.Video
-import com.jaiselrahman.wastatus.util.NetworkUtil
 
 class PlaylistDataSource(
     private val playlistVideoApi: PlaylistVideoApi,
@@ -38,7 +37,6 @@ class PlaylistDataSource(
     }
 
     private fun loadFromNetwork(pos: Int = 0) {
-        if (!NetworkUtil.isNetworkAvailable()) return
         postValue(Status.START)
         try {
             val videos = playlistVideoApi.loadVideos(pos)

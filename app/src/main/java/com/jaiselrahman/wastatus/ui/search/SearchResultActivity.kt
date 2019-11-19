@@ -1,4 +1,4 @@
-package com.jaiselrahman.wastatus.ui
+package com.jaiselrahman.wastatus.ui.search
 
 import android.app.SearchManager
 import android.content.ComponentName
